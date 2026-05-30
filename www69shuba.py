@@ -56,14 +56,20 @@ def _get_chapter_links(html: str) -> dict[int, str]:
         for li in catalog.select("ul li"):
             data_num_val = li.get("data-num")
             data_num_str = (
-                data_num_val[0] if isinstance(data_num_val, list) else str(data_num_val)
+                data_num_val[0]
+                if isinstance(data_num_val, list)
+                else str(data_num_val)
             )
             chapter_num = int(data_num_str)
 
             a = li.find("a")
             if a and a.get("href"):
                 href_val = a.get("href")
-                href_str = href_val[0] if isinstance(href_val, list) else str(href_val)
+                href_str = (
+                    href_val[0]
+                    if isinstance(href_val, list)
+                    else str(href_val)
+                )
                 links[chapter_num] = href_str.strip()
     return links
 
@@ -102,7 +108,9 @@ def download(book_id: str, output_dir: str = "output/69shuba"):
         )
 
         for id, link in chapter_links.items():
-            progress.update(task, advance=1, description=f"Scraping chapter {id}")
+            progress.update(
+                task, advance=1, description=f"Scraping chapter {id}"
+            )
 
             filename = f"{book_dir}/{id}.txt"
             if os.path.exists(filename):
